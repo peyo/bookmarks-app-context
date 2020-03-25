@@ -7,12 +7,14 @@ import "./BookmarkItem.css";
 function deleteBookmarkRequest(bookmarkId, callback) {
   fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
     headers: {
-      "authorization": `bearer ${config.API_KEY}`
+      Authorization: `Bearer ${config.API_TOKEN}`
     }
   })
     .then(res => {
       if (!res.ok) {
-        return res.json().then(error => {
+        return res
+          .json()
+          .then(error => {
         throw error
       })
       }

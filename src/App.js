@@ -39,8 +39,8 @@ class App extends Component {
     fetch(config.API_ENDPOINT, {
       method: "GET",
       headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${config.API_KEY}`
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${config.API_TOKEN}`
       }
     })
       .then(res => {
@@ -70,8 +70,7 @@ class App extends Component {
             component={AddBookmark}
           />
           <Route
-            exact
-            path="/"
+            path="/bookmarks"
             component={BookmarkList}
           />
           </div>
