@@ -34,7 +34,9 @@ class AddBookmark extends Component {
       .then(res => {
         if (!res.ok) {
           // get the error message from the response,
-          return res.json().then(error => {
+          return res
+            .json()
+            .then(error => {
             // then throw it
             throw error;
           });
@@ -47,7 +49,7 @@ class AddBookmark extends Component {
         description.value = "";
         rating.value = "";
         this.context.addBookmark(data);
-        this.props.history.push("/");
+        this.props.history.push("/bookmarks");
       })
       .catch(error => {
         this.setState({ error });
@@ -55,7 +57,7 @@ class AddBookmark extends Component {
   };
 
   handleClickCancel = () => {
-    this.props.history.push("/")
+    this.props.history.push("/bookmarks")
   };
 
   render() {

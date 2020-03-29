@@ -6,6 +6,7 @@ import "./BookmarkItem.css";
 
 function deleteBookmarkRequest(bookmarkId, callback) {
   fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${config.API_TOKEN}`
     }
@@ -21,11 +22,15 @@ function deleteBookmarkRequest(bookmarkId, callback) {
       return res.json()
     })
     .then(data => {
-    callback(bookmarkId)
+      callback(bookmarkId)
     })
     .catch(error => {
     console.error(error)
   })
+}
+
+function refreshPage() {
+  window.location.reload(false);
 }
 
 export default function BookmarkItem(props) {
@@ -44,13 +49,14 @@ export default function BookmarkItem(props) {
           <p className="BookmarkItem__description">{props.description}</p>
           <div className="BookmarkItem__buttons">
             <button
-                className="BookmarkItem__description"
-                onClick={() => {
-                  deleteBookmarkRequest(
-                    props.id,
-                    context.deleteBookmark,
-                  )
-                }}
+              className="BookmarkItem__description"
+              onClick={() => {
+                deleteBookmarkRequest(
+                  props.id,
+                  context.deleteBookmark,
+                );
+                refreshPage();
+              }}
             >
               Delete
             </button>
