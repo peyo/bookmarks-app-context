@@ -4,12 +4,15 @@ import config from "../config";
 const Required = () => <span className="AddBookmark__required">*</span>;
 
 class EditBookmark extends Component {
-  state = {
-    title: "",
-    url: "",
-    description: "",
-    rating: "",
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      title: "",
+      url: "",
+      description: "",
+      rating: "",
+    };
+  }
 
   componentDidMount() {
     const bookmarkId = this.props.match.params.bookmarkId
