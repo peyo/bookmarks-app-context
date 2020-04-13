@@ -67,9 +67,12 @@ class EditBookmark extends Component {
         this.setState({ error });
       });
   }
-
-  handleChange(event) {
-    this.setState({ value: event.target.value });
+  
+  handleChange = (event) => {
+    let name = event.target.getAttribute("name");
+    this.setState({
+      [name]: event.target.value
+    });
   }
 
   handleClickCancel = () => {
@@ -88,8 +91,12 @@ class EditBookmark extends Component {
     return (
       <section className="EditBookmark">
         <h2>Edit Bookmark</h2>
-        <form className="AddBookmark__form" onSubmit={this.handleSubmit}>
-          <div className="AddBookmark__error" role="alert">
+        <form
+          className="AddBookmark__form"
+          onSubmit={this.handleSubmit}>
+          <div
+            className="AddBookmark__error"
+            role="alert">
             {error && <p>{error.message}</p>}
           </div>
           <div>
