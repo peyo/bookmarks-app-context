@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import BookmarksContext from "../BookmarksContext";
 import config from "../config";
 
 const Required = () => <span className="AddBookmark__required">*</span>;
 
 class EditBookmark extends Component {
-  static contextType = BookmarksContext;
-
   state = {
     title: "",
     url: "",
@@ -16,7 +13,7 @@ class EditBookmark extends Component {
 
   componentDidMount() {
     const bookmarkId = this.props.match.params.bookmarkId
-    fetch(`https://localhost:8000/api/bookmarks/${bookmarkId}`, {
+    fetch(`http://localhost:8000/bookmarks/${bookmarkId}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -47,7 +44,7 @@ class EditBookmark extends Component {
       rating: rating.value
     };
     this.setState({ error: null });
-    fetch(`https://localhost:8000/api/bookmarks/${this.props.match.params.bookmarkId}`, {
+    fetch(`http://localhost:8000/bookmarks/${this.props.match.params.bookmarkId}`, {
       method: "PATCH",
       body: JSON.stringify(bookmark),
       headers: {
@@ -71,6 +68,10 @@ class EditBookmark extends Component {
       });
   }
 
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
   handleClickCancel = () => {
     this.props.history.push("/bookmarks")
   };
@@ -82,7 +83,7 @@ class EditBookmark extends Component {
       url,
       description,
       rating
-    } = this.context;
+    } = this.state;
 
     return (
       <section className="EditBookmark">
@@ -94,51 +95,54 @@ class EditBookmark extends Component {
           <div>
             <label htmlFor="title">
               Title <Required />
+              <input
+                type="text"
+                name="title"
+                id="title"
+                required
+                value={title}
+                onChange={this.handleChange}
+                />
             </label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              placeholder="Great website!"
-              required
-              value={title}
-            />
           </div>
           <div>
             <label htmlFor="url">
               URL <Required />
+              <input
+                type="url"
+                name="url"
+                id="url"
+                required
+                value={url}
+                onChange={this.handleChange}
+              />
             </label>
-            <input
-              type="url"
-              name="url"
-              id="url"
-              placeholder="https://www.great-website.com/"
-              required
-              value={url}
-            />
           </div>
           <div>
-            <label htmlFor="description">Description</label>
-            <textarea
-              name="description"
-              id="description"
-              value={description}
-            />
+            <label htmlFor="description">
+              Description
+              <textarea
+                name="description"
+                id="description"
+                value={description}
+                onChange={this.handleChange}
+              />
+            </label>
           </div>
           <div>
             <label htmlFor="rating">
               Rating <Required />
+              <input
+                type="number"
+                name="rating"
+                id="rating"
+                min="1"
+                max="5"
+                required
+                value={rating}
+                onChange={this.handleChange}
+              />
             </label>
-            <input
-              type="number"
-              name="rating"
-              id="rating"
-              defaultValue="1"
-              min="1"
-              max="5"
-              required
-              value={rating}
-            />
           </div>
           <div className="AddBookmark__buttons">
             <button type="button" onClick={this.handleClickCancel}>
