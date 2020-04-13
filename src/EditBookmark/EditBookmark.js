@@ -8,16 +8,20 @@ class EditBookmark extends Component {
   static contextType = BookmarksContext;
 
   state = {
-    title: this.context.title,
-    url: this.context.url,
-    description: this.context.description,
-    rating: this.context.rating,
+    title: "",
+    url: "",
+    description: "",
+    rating: "",
   };
 
   componentDidMount() {
     const bookmarkId = this.props.match.params.bookmarkId
     fetch(`https://localhost:8000/api/bookmarks/${bookmarkId}`, {
-      method: "GET"
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${config.API_TOKEN}`
+      }
     })
       .then(res => {
         if (!res.ok) {
@@ -43,7 +47,7 @@ class EditBookmark extends Component {
       rating: rating.value
     };
     this.setState({ error: null });
-    fetch(`https://localhost:8000/api/articles/${this.props.match.params.bookmarkId}`, {
+    fetch(`https://localhost:8000/api/bookmarks/${this.props.match.params.bookmarkId}`, {
       method: "PATCH",
       body: JSON.stringify(bookmark),
       headers: {
@@ -61,10 +65,15 @@ class EditBookmark extends Component {
         }
         this.context.updateBookmark(res)
       })
+      .then(this.props.history.push("/bookmarks"))
       .catch(error => {
         this.setState({ error });
       });
   }
+
+  handleClickCancel = () => {
+    this.props.history.push("/bookmarks")
+  };
 
   render() {
     const {
@@ -73,7 +82,7 @@ class EditBookmark extends Component {
       url,
       description,
       rating
-    } = this.state;
+    } = this.context;
 
     return (
       <section className="EditBookmark">
